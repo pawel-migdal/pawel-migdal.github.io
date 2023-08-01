@@ -16,15 +16,19 @@
           </a>
         </div>
       </nav>
-      <table data-toggle="table">
+      <table 
+      data-toggle="table"
+      data-search="true"
+      id="ScriptSummary">
         <thead>
           <tr>
-            <th>Script Name</th>
-            <th>Description</th>
-            <th>Last Ran</th>
-            <th>Email Sent out</th>
+            <th data-field="name">Script Name</th>
+            <th data-field="description">Description</th>
+            <th data-field="lastran">Last Ran</th>
+            <th data-field="emailed">Email Sent out</th>
           </tr>
         </thead>
+
       </table>
   
     <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>

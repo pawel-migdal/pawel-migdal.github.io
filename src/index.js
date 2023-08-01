@@ -28,10 +28,60 @@ const auth = getAuth();
 const db = getDatabase(app);
 
 const value = ref(db, '/');
-console.log(value)
+var data = "";
 onValue(value, (snapshot) => {
   console.log(snapshot.val())
+
+  data = snapshot.val();
+  update(data);
+  PopulateTable(data);
+  window.data = data;
 });
+
+
+function update(data) {
+  // counter will be the total number of scripts
+  // every time a change is made to the database, iterate through all the scripts to update the table
+  var counter = 0;
+  for (var key in data) {
+    console.log(data[key].name);
+  }
+    
+
+}
+
+  
+
+function PopulateTable(summary_data) {
+  console.log(summary_data);
+
+  var final_data = [];
+
+  for (var key in summary_data) {
+    var mydata =
+      {
+        "name": summary_data[key].name,
+        "description": summary_data[key].description,
+        "lastran": summary_data[key].lastran,
+        "emailed": summary_data[key].emailed,
+      }
+    
+    final_data.push(mydata);
+  
+  }
+
+  console.log(final_data);
+
+  var $table = $('#ScriptSummary');
+  $table.bootstrapTable('destroy');
+  $(function () {
+    $table.bootstrapTable({
+        data: final_data,
+    });
+  });
+  
+
+}
 
 
 
