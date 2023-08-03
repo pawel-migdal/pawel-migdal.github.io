@@ -30,7 +30,7 @@ const db = getDatabase(app);
 const value = ref(db, '/');
 var data = "";
 onValue(value, (snapshot) => {
-  console.log(snapshot.val())
+  // console.log(snapshot.val())
 
   data = snapshot.val();
   update(data);
@@ -42,26 +42,41 @@ onValue(value, (snapshot) => {
 function update(data) {
   // counter will be the total number of scripts
   // every time a change is made to the database, iterate through all the scripts to update the table
-  var counter = 0;
-  data = {};
+
+
+  var final_data = {};
   for (var key in data) {
     for (var sub_key in data[key]) {
       for (var version in data[key][sub_key]) {
-        console.log(data[key][sub_key]);
+        // console.log(data[key][sub_key]);
         var temp = data[key][sub_key][version];
-        // get the most recent record based on data 
-        if (data[date] > temp[date]) {
-          data = temp;
-        } 
-        
+        // get the most recent record based on data
+        if (final_data == {}) {
+          final_data = temp;
+        } elif(compareDates(temp.lastran,final_data.lastran)) {
+          console.log(temp.lastran);
+        }
       }
+
+      // PopulateTable(data);
+
     }
   }
-    
-
 }
 
-  
+const compareDates = (d1, d2) => {
+  let date1 = new Date(d1).getTime();
+  let date2 = new Date(d2).getTime();
+
+  if (date1 < date2) {
+    console.log(`${d1} is less than ${d2}`);
+  } else if (date1 > date2) {
+    console.log(`${d1} is greater than ${d2}`);
+  } else {
+    console.log(`Both dates are equal`);
+  }
+};
+
 
 function PopulateTable(summary_data) {
   console.log(summary_data);
@@ -81,7 +96,7 @@ function PopulateTable(summary_data) {
   
   }
 
-  console.log(final_data);
+  // console.log(final_data);
 
   var $table = $('#ScriptSummary');
   $table.bootstrapTable('destroy');
