@@ -34,7 +34,7 @@ onValue(value, (snapshot) => {
 
   data = snapshot.val();
   update(data);
-  PopulateTable(data);
+  // PopulateTable(data);
   window.data = data;
 });
 
@@ -43,8 +43,19 @@ function update(data) {
   // counter will be the total number of scripts
   // every time a change is made to the database, iterate through all the scripts to update the table
   var counter = 0;
+  data = {};
   for (var key in data) {
-    console.log(data[key].name);
+    for (var sub_key in data[key]) {
+      for (var version in data[key][sub_key]) {
+        console.log(data[key][sub_key]);
+        var temp = data[key][sub_key][version];
+        // get the most recent record based on data 
+        if (data[date] > temp[date]) {
+          data = temp;
+        } 
+        
+      }
+    }
   }
     
 
