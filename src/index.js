@@ -45,38 +45,52 @@ function update(data) {
 
 
   var final_data = {};
-  for (var key in data) {
-    for (var sub_key in data[key]) {
-      for (var version in data[key][sub_key]) {
+  var middle_data = {};
+  for (var key in data) { // script name
+    for (var sub_key in data[key]) { // Version
+      for (var version in data[key][sub_key]) { // Unique version key
         // console.log(data[key][sub_key]);
         var temp = data[key][sub_key][version];
         // get the most recent record based on data
-        if (final_data == {}) {
-          final_data = temp;
-        } elif(compareDates(temp.lastran,final_data.lastran)) {
-          console.log(temp.lastran);
+        if (JSON.stringify(middle_data) === JSON.stringify({})) {
+          middle_data = Object.assign({}, temp);
+          // console.log(middle_data)
+
+        } else if(compareDates(temp.lastUpdated,middle_data.lastUpdated)) {
+          middle_data = Object.assign({}, temp);
         }
       }
 
-      // PopulateTable(data);
-
+      // console.log(middle_data)
+      final_data[key] = Object.assign({}, middle_data);
+      middle_data = {};
     }
   }
+
+  // console.log(final_data);
+  PopulateTable(final_data);
+
 }
 
-const compareDates = (d1, d2) => {
+function compareDates(d1, d2) {
   let date1 = new Date(d1).getTime();
   let date2 = new Date(d2).getTime();
+  
+  // console.log(d1, d2);
+  // console.log(date1, date2);
 
   if (date1 < date2) {
-    console.log(`${d1} is less than ${d2}`);
+    // console.log(`${d1} is less than ${d2}`);
+    return false;
   } else if (date1 > date2) {
-    console.log(`${d1} is greater than ${d2}`);
+    // console.log(`${d1} is greater than ${d2}`);
+    return true; 
   } else {
     console.log(`Both dates are equal`);
+    // console.log(d1, d2);
   }
 };
-
+  
 
 function PopulateTable(summary_data) {
   console.log(summary_data);
@@ -84,16 +98,16 @@ function PopulateTable(summary_data) {
   var final_data = [];
 
   for (var key in summary_data) {
+    // console.log();
     var mydata =
-      {
-        "name": summary_data[key].name,
-        "description": summary_data[key].description,
-        "lastran": summary_data[key].lastran,
-        "emailed": summary_data[key].emailed,
-      }
-    
-    final_data.push(mydata);
+    {
+      "description": summary_data[key].description,
+      "emailed": summary_data[key].emailed,
+      "lastran": summary_data[key].lastUpdated,
+      "name": summary_data[key].name,
+    }
   
+    final_data.push(mydata);
   }
 
   // console.log(final_data);
@@ -109,18 +123,28 @@ function PopulateTable(summary_data) {
 
 }
 
-
-
-
-
-// const signInButton = document.getElementById('signInBtn');
-// signInButton.onclick = () => auth.signInWithPopup(provider);
-
-// onAuthStateChanged(auth, (user) => {
-//   if (user != null) {
-//     console.log('logged in')
-//   } else {
-//     console.log('logged out')
-//   }
-// });
-
+function cellStyle(value, row, index) {
+  var classes = [
+    'bg-blue',
+    'bg-green',
+    'bg-orange',
+    'bg-yellow',
+    'bg-red'
+  ]
+  console.log("CellStyle")
+  if (index % 2 === 0 && index / 2 < classes.length) {
+    return {
+      classes: classes[index / 2]
+    }
+  }
+  if (value == "Failed") {
+    return {
+      classes: 'bg-red'
+    }
+  }
+  return {
+    css: {
+      color: 'blue'
+    }
+  }
+}

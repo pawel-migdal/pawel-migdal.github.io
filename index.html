@@ -6,6 +6,9 @@
     <title>Monitoring</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table.min.css">
+    <link rel="stylesheet" href="src/style.css">
+    <link rel="stylesheet" href="https://s3-us-west-2.amazonaws.com/colors-css/2.2.0/colors.min.css">
+
     <script type="module" src="src/index.js" defer></script>    
 </head>
   <body>
@@ -15,24 +18,44 @@
             <h1>Script Monitoring Website</h1>
           </a>
         </div>
-      </nav>
-      <table 
+    </nav>
+    <div class="container">
+      <table class="table table-hover table-bordered"
       data-toggle="table"
       data-search="true"
       id="ScriptSummary">
         <thead>
           <tr>
-            <th data-field="name">Script Name</th>
-            <th data-field="description">Description</th>
+            <th data-field="name">Yes</th>
+            <th data-field="description" >Description</th>
             <th data-field="lastran">Last Ran</th>
-            <th data-field="emailed">Email Sent out</th>
+            <th data-field="emailed" data-cell-style="cellStyle">Email Sent out</th>
           </tr>
         </thead>
 
       </table>
-  
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table.min.js"></script>
+    <script>
+      function cellStyle(value, row, index) {
+        console.log(value.includes("Failed"))
+        if (value.includes("No")) {
+          return {
+            css: {
+              'background-color': 'red'
+            }
+          }
+        } else {
+          return {
+            css: {
+              'background-color': 'green'
+            }
+          }
+          
+        }
+      }
+    </script>
   </body>
 </html>
